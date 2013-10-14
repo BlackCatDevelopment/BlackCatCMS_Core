@@ -1,0 +1,47 @@
+/**
+ * This file is part of Black Cat CMS Core, released under the GNU GPL
+ * Please see LICENSE and COPYING files in your package for details, specially for terms and warranties.
+ * 
+ * NOTICE:LEPTON CMS Package has several different licenses.
+ * Please see the individual license in the header of each single file or info.php of modules and templates.
+ *
+ * @author          LEPTON Project
+ * @copyright       2012, LEPTON Project
+ * @link            http://www.LEPTON-cms.org
+ * @license         http://www.gnu.org/licenses/gpl.html
+ * @license_terms   please see LICENSE and COPYING files in your package
+  *
+ */
+
+#fc_admintools {
+	line-height: 2em;
+	padding: 0px;
+	background-color: #f8f8f8;
+}
+
+	#fc_admintools li {
+		margin: 0px;
+	}
+		#fc_admintools li .fc_admintool_link {
+			padding:	0.4em 1em;
+			display:	block;
+		}
+			#fc_admintools li img {
+				float:	left;
+			}
+			#fc_admintools .fc_admintool_icon {
+				color:		#9da8b2;
+				font-size:	1.6em;
+			}
+			#fc_admintools .fc_admintool_title {
+				padding-left:	0.5em;
+				font-weight:	bold;
+				font-size:		1.2em;
+			}
+			
+			#fc_admintools .fc_admintool_description {
+				padding-left:	50px;;
+				color:			#282a2e;
+				font-size:		1em;
+			}
+

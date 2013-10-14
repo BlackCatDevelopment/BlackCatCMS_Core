@@ -1,0 +1,110 @@
+/**
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 3 of the License, or (at
+ *   your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful, but
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ *   General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program; if not, see <http://www.gnu.org/licenses/>.
+ *
+ *   @author          Black Cat Development
+ *   @copyright       2013, Black Cat Development
+ *   @link            http://blackcat-cms.org
+ *   @license         http://www.gnu.org/licenses/gpl.html
+ *   @category        CAT_Core
+ *   @package         mojito
+ *
+ */
+
+@import url('reset.css');
+@import url('font.css');
+@import url('basic.css');
+@import url('menu.css');
+
+#main_header {
+	margin: auto;
+	padding: 7px 0px 13px 0px;
+	width: 960px;
+}
+
+	#logo {
+		display: inline-block;
+		margin-left: 1em;
+		width: 174px;
+		height: 64px;
+		border-bottom: none;
+		background: url(images/logo.png) left center no-repeat;
+		text-indent: -9999px;
+	}
+
+
+#content {
+	position: relative;
+	margin: auto;
+	width: 960px;
+	border: 1px solid #9da8b2;
+	-webkit-box-shadow:	black 0px 0px 4px -1px;
+	-moz-box-shadow:	black 0px 0px 4px -1px;
+	box-shadow:			black 0px 0px 4px -1px;
+}
+	#content_header {
+		position: relative;
+		padding: 1em 2em;
+		-webkit-box-shadow: 10px 10px 5px #687a8a inset;
+		-moz-box-shadow: -5px 10px 5px #687a8a inset;
+		box-shadow: 0px -8px 5px -10px #687a8a inset;
+	}
+
+		#fork_me {
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			width: 114px;
+			height: 114px;
+			border-bottom: none;
+			background: url(images/forkme.png) no-repeat;
+			z-index: 9999;
+		}
+
+	#content_main {
+		position: relative;
+		display: table-cell;
+		padding: 2em;
+		width: 715px;
+		background: white;
+		vertical-align: top;
+	}
+	#sidebar {
+		display: table-cell;
+		width: 243px;
+		-webkit-box-shadow: -10px 0px 10px -10px #687a8a inset;
+		-moz-box-shadow: -10px 0px 10px -10px #687a8a inset;
+		box-shadow: -10px 0px 10px -10px #687a8a inset;
+		vertical-align: top;
+	}
+
+
+#main_footer {
+	margin: auto;
+	width: 960px;
+}
+	#footer_content {
+		clear: both;
+		padding-bottom: 2em;
+		color: #687a8a;
+		text-align: center;
+		font-size: 0.9em;
+		line-height: 1.2em;
+	}
+		a.footer_icon {
+			display: inline-block;
+			margin: 0.4em 0.6em 1em 0.6em;
+			border-bottom: none;
+			text-shadow: 1px 1px 1px white;
+			font-size: 1.8em;
+		}

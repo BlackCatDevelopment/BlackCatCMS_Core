@@ -1,0 +1,122 @@
+/**
+ * This file is part of Black Cat CMS Core, released under the GNU GPL
+ * Please see LICENSE and COPYING files in your package for details, specially for terms and warranties.
+ * 
+ * NOTICE:LEPTON CMS Package has several different licenses.
+ * Please see the individual license in the header of each single file or info.php of modules and templates.
+ *
+ * @author          LEPTON Project
+ * @copyright       2012, LEPTON Project
+ * @link            http://www.LEPTON-cms.org
+ * @license         http://www.gnu.org/licenses/gpl.html
+ * @license_terms   please see LICENSE and COPYING files in your package
+  *
+ */
+
+#fc_admin_header {
+	top:			0px;
+	line-height:	2em;
+	color:			#1d2023;
+	height:			50px;
+}
+
+	#fc_side_choose {
+		display:		inline-block;
+		width:			180px;
+		padding:		0px 10px;
+		float:			left;
+		line-height:	48px;
+		font-weight:	800;
+	}
+        #fc_side_choose a[href] { color:#000; }
+
+	#fc_account {
+		float: right;
+	}
+
+	#fc_user_preferences {
+		display:		inline-block;
+		float:			left;
+		padding:		0px 15px;
+		height:			48px;
+		line-height:	48px;
+		color:			#5b6268;
+		font-size:		2.4em;
+		border-right:	1px solid #9da8b2;
+		border-left:	1px solid #9da8b2
+	}
+
+	#fc_display_name {
+		display:		inline-block;
+		line-height:	1.2em;
+		padding-top:	0.6em;
+		font-size:		0.45em;
+	}
+	
+	#fc_username {
+		display:		block;
+		font-size:		0.8em;
+		font-weight:	400;
+		color:			#282a2e;
+	}
+
+	#fc_logout {
+		display:		inline-block;
+		float:			left;
+		height:			48px;
+		width:			48px;
+		line-height:	48px;
+		text-align:		center;
+		font-size:		1.2em;
+		color:			#5b6268;
+	}
+
+
+#fc_sidebar_header {
+	position:			relative;
+	height:				23px;
+	line-height:		23px;
+	font-size:			0.9em;
+	font-weight:		800;
+	padding-left:		10px;
+	font-weight:		400;
+}
+
+#fc_content_header {
+	height:			49px;
+	padding:		0px 15px;
+	line-height:	49px;
+	border-bottom:	1px solid #1d2023;
+	font-weight:	800;
+	font-size:		1em;
+	color:			#f8f8f8;
+}
+
+
+.fc_modified_header {
+	line-height:	2em;
+	text-shadow:	1px 1px 1px white;
+	border-bottom:	1px solid #77818a;
+	border-top:		1px solid white;
+	padding:		0px 15px;
+}
+
+.fc_current_page {
+	float: left;
+}
+
+.fc_modified {
+	float: right;
+}
+
+.fc_form_content_title {
+	background-position: 0 top;
+	background-repeat: repeat-x;
+	line-height: 2.5em;
+	text-shadow: 1px 1px 1px white;
+	height: 2.5em;
+	border-bottom-color: #9e9e9e;
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	background-color: #f8f8f8;
+}
