@@ -145,12 +145,14 @@ function togglePageTree()
 // Function to show the dialog with error message if an ajax reports an error
 function return_error( process_div, message )
 {
-	// Remove previously generated .process if an error occured
-	process_div.slideUp(1200,function()
+	if ( typeof process_div != 'undefined' )
 	{
-		process_div.remove();
-	});
-
+		// Remove previously generated .process if an error occured
+		process_div.slideUp(1200,function()
+		{
+		    process_div.remove();
+		});
+	}
 	// Check if .fc_popup exists - if not add div.fc_popup before #admin_header
 	if ( $('.fc_popup').size() === 0 )
 	{
@@ -400,8 +402,8 @@ function dialog_ajax( title, ajaxUrl, ajaxData, ajaxType, ajaxDataType, beforeSe
 	});
 }
 
-// Function to define confirm of forms showing in a dialog and adding a optional beforeSend, afterSend and beforeSerialize
-function dialog_form( currentForm, beforeSend, afterSend, data_type, beforeSerialize )
+// Function to define confirm of forms showing in a dialog and adding a optional beforeSend and afterSend
+function dialog_form( currentForm, beforeSend, afterSend, data_type )
 {
 	if ( typeof data_type == 'undefined' ) {
 		var data_type	= 'json';
@@ -414,17 +416,9 @@ function dialog_form( currentForm, beforeSend, afterSend, data_type, beforeSeria
 		// Define ajax for form
 		currentForm.ajaxSubmit(
 		{
-			context:			currentForm,
-			dataType:			data_type,
-			beforeSerialize:	function( $form, options )
-			{
-				// check if a function beforeSend is defined and call it if true
-				if ( typeof beforeSerialize != 'undefined' && beforeSerialize !== false )
-				{
-					beforeSerialize.call(this, $form, options);
-				}
-			},
-			beforeSend:		function( data, $form, options )
+			context:		currentForm,
+			dataType:		data_type,
+			beforeSend:		function( data )
 			{
 				// Check if the form has a (mostly hidden) input field with a title for the form (if not 'loading' is used
 				if ( currentForm.find('input[name=fc_form_title]').size() > 0 )
@@ -446,7 +440,7 @@ function dialog_form( currentForm, beforeSend, afterSend, data_type, beforeSeria
 				// check if a function beforeSend is defined and call it if true
 				if ( typeof beforeSend != 'undefined' && beforeSend !== false )
 				{
-					beforeSend.call(this, data, $form, options);
+					beforeSend.call(this);
 				}
 			},
 			success:		function( data, textStatus, jqXHR )
@@ -458,7 +452,7 @@ function dialog_form( currentForm, beforeSend, afterSend, data_type, beforeSeria
 					// check if a function afterSend is defined and call it if true
 					if ( typeof afterSend != 'undefined' && afterSend !== false )
 					{
-						afterSend.call(this, data, textStatus, jqXHR);
+						afterSend.call(this, data);
 					}
 				}
 				else {
