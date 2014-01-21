@@ -160,7 +160,7 @@ jQuery(document).ready(function(){
 						$('#fc_message').removeClass('icon-warning highlight').addClass('icon-info').text( ' ' + data.message).slideDown(300);
 					}
 					else {
-						$('#fc_forms').effect( 'shake', { times: 2 }, 300);
+						$('#fc_forms').effect( 'shake', { times: 2 }, 300, function(){ $(this).css({left: '50%'})});
 						$('#fc_message').addClass('icon-warning highlight').removeClass('icon-info').text(' ' + data.message).slideDown(300);
 						$('#fc_forgot').focus();
 					}
