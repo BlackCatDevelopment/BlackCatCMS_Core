@@ -1,7 +1,0 @@
-<script type="text/javascript">
-  if( typeof 'jQuery' != 'undefined' ) {
-    jQuery(document).ready(function($) {
-  		$("#tabs").tabs();
-	  });
-  }
-</script>

@@ -1,9 +1,0 @@
-<script type="text/javascript">
-  if( typeof 'jQuery' != 'undefined' ) {
-    jQuery(document).ready(function($) {
-      $("div.explode").click(function () {
-        $(this).hide("explode", 1000);
-      });
-    });
-  }
-</script>

@@ -1,9 +1,0 @@
-<script type="text/javascript">
-  if( typeof 'jQuery' != 'undefined' ) {
-    jQuery(document).ready(function($) {
-      $("div.clip").click(function () {
-        $(this).hide("clip", { direction: "horizontal" }, 1000);
-      });
-    });
-  }
-</script>
