@@ -1,0 +1,120 @@
+body{padding-top:50px;}
+.navbar-brand{font-size:1.2em;}
+.nav-sidebar{margin-left:-15px;margin-right:-15px;}
+.nav-sidebar > li > a{padding-left:15px;padding-right:20px;z-index:1;}
+.main{padding:20px;}
+ul.nav.nav-sidebar li span{position:relative;display:inline-block;padding-top:15px;z-index:3;} /* caret icon */
+div#sidebar ul.nav.nav-sidebar li li {padding-left:22px;}
+html body.fuelux div.container-fluid div.row div.col-md-10 section ol.breadcrumb{margin:0;padding:0 0 0 7px;}
+
+/* detached buttons */
+div.row.breadcrumb section#subheader div#contextual.pull-right button{margin-left:5px;}
+
+/* dashboard lanes */
+div.dashboard{width:100%;}
+div.dashboard ul{float:left;list-style:none outside none;padding:.3%;min-height:30px;}
+div.dashboard .bs_placeholder{border:1px dashed #ccc;margin:0 1em 1em 0;height:50px;}
+div.dashboard .bs_highlight{background-color:#ccc;}
+/* fix dashboard panels */
+div.dashboard div.panel{margin-bottom:0;}
+div.dashboard li.ui-sortable-handle{margin-bottom:20px;}
+
+/* Font Awesome Aliases */
+.fa-media:before{content:"\f1c8";}
+.fa-settings:before{content:"\f085";}
+.fa-addons:before,.fa-module:before{content:"\f12e";}
+.fa-admintools:before{content:"\f0ad";}
+.fa-groups:before{content:"\f0c0";}
+.fa-users:before{content:"\f183";}
+.fa-roles:before{content:"\f02e";}
+.fa-permissions:before{content:"\f084";}
+.fa-pages:before{content:"\f0c5";}
+.fa-template:before{content:"\f03e";}
+.fa-public:before{content:"\f06e";}
+.fa-hidden:before{content:"\f070";}
+.fa-private:before{content:"\f084";}
+.fa-deleted:before{content:"\f014";}
+.fa-datetime:before{content:"\f017";}
+.fa-mail:before{content:"\f0e0";}
+.fa-headers:before{content:"\f0ac";}
+.fa-administration:before{content:"\f085";}
+.fa-language:before{content:"\f086";}
+
+/* dark backdrop for session timed out modal */
+.dark.fade.in ~ .modal-backdrop.fade.in {opacity:.9 !important;}
+
+/* fixes Fuel UX Repeater for Bootswatch Themes */
+.fuelux .repeater-header, .fuelux .repeater-footer{background-color:transparent;}
+.fuelux .repeater-thumbnail{overflow:hidden;}
+
+/* draggable panels with left icon bar for page modification */
+ul.draggable-panel{list-style:none outside none;padding-left:0;}
+div.pos-r{position:relative;}
+div.panel-icon-wrapper{position:absolute;bottom:0;left:0;margin-left:0;z-index:1000;height:100%;overflow-y:auto;border-right:1px solid #ccc;border-bottom-left-radius:4px;}
+div.panel-content{margin-left:35px;}
+
+/* fixes panels for Bootswatch Themes */
+ul.draggable-panel li.panel.panel-primary div.panel-body.pos-r{background-color:white;}
+.panel table{background-color:transparent;}
+
+/* edit page icons */
+li.panel div.panel-body.pos-r div.panel-icon-wrapper ul.nav.nav-left li span.fa{display:block;padding:10px 15px;color:#337ab7;}
+
+/* make sure the datepicker is in foreground on modals */
+html body.fuelux.modal-open div#ui-datepicker-div.ui-datepicker.ui-widget.ui-widget-content.ui-helper-clearfix.ui-corner-all{z-index:99999 !important;}
+
+/* mark.js */
+mark{background:orange;color:black;}
+
+/* margin for tablist */
+ul[role="tablist"]{margin-bottom:15px;}
+
+/* media preview */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* Einstellung draus machen */
+img.thumb{width:80px;}
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+
+/* color change for session timeout counter */
+div#sessiontimer.sesstimealert{-webkit-animation:colorchange .2s infinite alternate;}
+@-webkit-keyframes colorchange {
+    0% {color:#f00;}
+    50% {color:white}
+}
+
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 768px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -33%;
+  }
+
+  .row-offcanvas-left.active {
+    left: 33%;
+  }
+
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 33%;
+    margin-left: 10px;
+  }
+}
+
+@media (min-width: 768px) {
+  .main {
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
