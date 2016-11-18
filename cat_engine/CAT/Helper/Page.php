@@ -25,6 +25,7 @@ if (!class_exists('CAT_Helper_Page'))
     class CAT_Helper_Page extends CAT_Object
     {
         protected static $loglevel            = \Monolog\Logger::EMERGENCY;
+        #protected static $loglevel            = \Monolog\Logger::DEBUG;
         private   static $instance            = NULL;
 
         private   static $meta_tpl            = '<meta %%content%% />';
@@ -199,6 +200,70 @@ if (!class_exists('CAT_Helper_Page'))
         }   // end function getAssets()
 
         /**
+         * determine default page
+         *
+         * @access public
+         * @return void
+         **/
+        public static function getDefaultPage()
+        {
+            if ( ! count(self::$pages) )
+                self::init();
+            // for all pages with level 0...
+            $root = array();
+            $now  = time();
+            $ordered = CAT_Helper_Array::ArraySort(self::$pages,'position');
+            foreach( $ordered as $page )
+            {
+                if (
+                       $page['level'] == 0
+                    && $page['visibility'] == 'public'
+                    && self::isActive($page['page_id'])
+                ) {
+                    if(!CAT_Registry::get('PAGE_LANGUAGES')===true || $page['language'] == CAT_Registry::get('LANGUAGE'))
+                    {
+                        return $page['page_id'];
+                    }
+                }
+            }
+            // no page so far, return first visible page on level 0
+            foreach( $ordered as $page )
+            {
+                if (
+                       $page['level'] == 0
+                    && $page['visibility'] == 'public'
+                    && self::isActive($page['page_id'])
+                ) {
+                    return $page['page_id'];
+                }
+            }
+        } // end function getDefaultPage()
+
+        /**
+         *
+         *
+         *
+         *
+         **/
+        public static function getLink($page_id)
+        {
+            if(!is_numeric($page_id))
+                $link = $page_id;
+            else
+                $link = self::properties($page_id,'link');
+
+            if(!$link)
+                return NULL;
+
+            // Check for :// in the link (used in URL's) as well as mailto:
+            if (strstr($link, '://') == '' && substr($link, 0, 7) != 'mailto:')
+                return CAT_URL.$link.CAT_Registry::get('PAGE_EXTENSION');
+            else
+                return $link;
+
+        }   // end function getLink()
+
+        /**
          * get properties for page $page_id
          *
          * @access public
@@ -348,6 +413,39 @@ if (!class_exists('CAT_Helper_Page'))
         }   // end function getSections()
 
         /**
+         * checks if page is active (=has active sections and is between
+         * publ_start and publ_end)
+         *
+         * @access public
+         * @param  integer $page_id
+         * @return boolean
+         **/
+        public static function isActive($page_id)
+        {
+            self::getSections($page_id);
+            if(self::isDeleted($page_id))
+                return false;
+            if(isset(self::$pages_sections[$page_id]) && count(self::$pages_sections[$page_id]))
+                return true;
+            return false;
+        } // end function isActive()
+
+        /**
+         * checks if page is deleted
+         *
+         * @access public
+         * @param  integer $page_id
+         * @return boolean
+         **/
+        public static function isDeleted($page_id)
+        {
+            $page    = self::properties($page_id);
+            if($page['visibility']=='deleted')
+                return true;
+            return false;
+        } // end function isDeleted()
+
+        /**
          * Check whether a page is visible or not
          * This will check page-visibility, user- and group permissions
          *
@@ -369,7 +467,7 @@ if (!class_exists('CAT_Helper_Page'))
                     break;
                 // shown if called, but not in menu; skip intro page (selectPage(true))
                 case 'hidden':
-#                    if(self::selectPage(true)==$page_id)
+                    if(CAT_Page::getID()==$page_id)
                         $show_it = true;
                     break;
                 // always visible
@@ -411,16 +509,21 @@ if (!class_exists('CAT_Helper_Page'))
          * @param  string  $key      - optional property name
          * @return mixed
          **/
-        public static function properties($page_id,$key=NULL)
+        public static function properties($page_id=NULL,$key=NULL)
         {
             if(!$page_id)
-                return NULL;
+            {
+                $page_id = CAT_Page::getID();
+            }
             if(!count(self::$pages) && !CAT_Registry::exists('CAT_HELPER_PAGE_INITIALIZED'))
+            {
                 self::init();
+            }
             // get page data
             $page = isset(self::$id_to_index[$page_id])
                   ? self::$pages[self::$id_to_index[$page_id]]
                   : array();
+
             if(count($page))
             {
                 if($key)
@@ -673,6 +776,7 @@ if (!class_exists('CAT_Helper_Page'))
         private static function getIncludes($file,$position='header')
         {
             // load file
+            self::$instance->log()->addDebug(sprintf('loading file [%s], position [%s]',$file,$position));
             require $file;
 
             $array   =& ${'mod_'.$position.'s'};
@@ -682,19 +786,20 @@ if (!class_exists('CAT_Helper_Page'))
             // if there are any entries...
             if (isset($array[$for]) && is_array($array[$for]) && count($array[$for]))
             {
-
                 // reference the appropriate JS array (header or footer)
                 if ($position == 'header') $ref =& self::$js;
                 else                       $ref =& self::$f_js;
 
                 if($position=='header') // header only
                 {
+                    self::$instance->log()->addDebug('checking META');
                     // ----- check META -----
                     if(    isset($array[$for]['meta'])
                         && is_array($array[$for]['meta'])
                         && count($array[$for]['meta'])
                     ) {
                         $arr =& $array[$for]['meta']; // shorter :)
+                        self::$instance->log()->addDebug(sprintf('   There are [%d] meta entries',count($arr)));
                         foreach($arr as $el)
                         {
                             if(!is_array($el) || !count($el)) continue;
@@ -709,9 +814,11 @@ if (!class_exists('CAT_Helper_Page'))
                             );
                         }
                     }
+                    self::$instance->log()->addDebug('checking CSS');
                     // ----- check CSS -----
                     if(isset($array[$for]['css']) && is_array($array[$for]['css']) && count($array[$for]['css']))
                     {
+                        self::$instance->log()->addDebug(sprintf('   There are [%d] css entries',count($array[$for]['css'])));
                         // check the paths
                         foreach($array[$for]['css'] as $item)
                         {
@@ -734,14 +841,16 @@ if (!class_exists('CAT_Helper_Page'))
                         }
                     }
                 }   // end if($position=='header')
-
+                self::$instance->log()->addDebug('checking jQuery components');
                 // ----- check jQuery components -----
                 if (isset($array[$for]['jquery']) && is_array($array[$for]['jquery']) && count($array[$for]['jquery']) && !self::$jquery_seen)
                 {
+                    self::$instance->log()->addDebug(sprintf('   There are [%d] jQuery entries',count($array[$for]['jquery'])));
                     $arr = $array[$for]['jquery']; // shorter :)
                     // scan for plugins
                     if (isset($arr['plugins']) && is_array($arr['plugins']))
                     {
+                        self::$instance->log()->addDebug(sprintf('   There are [%d] jQuery plugins to be loaded',count($arr['plugins'])));
                         foreach ($arr['plugins'] as $item)
                         {
                             if(false!==($file=self::findJQueryPlugin($item)))
@@ -763,7 +872,6 @@ if (!class_exists('CAT_Helper_Page'))
                     ) {
                         self::$jquery_enabled = true;
                     }
-
                 }   // end if (isset($array[$for]['jquery']))
 
                 // ----- other JS -----
@@ -822,7 +930,11 @@ if (!class_exists('CAT_Helper_Page'))
                 self::$pages = $result->fetchAll();
                 // map index to page id
                 foreach(self::$pages as $index => $page)
+                {
+                    // note: order is important! $id_to_index first!
                     self::$id_to_index[$page['page_id']] = $index;
+                    self::$pages[$index]['href'] = self::getLink($page['page_id']);
+                }
             }
 
             CAT_Registry::register('CAT_HELPER_PAGE_INITIALIZED',true);

@@ -16,9 +16,15 @@
 */
 
 // Get content
-$result = CAT_Helper_Page::getInstance()->db()->query("SELECT `content` FROM `".CAT_TABLE_PREFIX."mod_wysiwyg` WHERE `section_id` = '".$section_id."'");
-if($result&&$result->rowCount()>0)
+$result = CAT_Helper_Page::getInstance()
+          ->db()
+          ->query(
+              "SELECT `content` FROM `:prefix:mod_wysiwyg` WHERE `section_id`=?",
+              array($section_id)
+            );
+
+if($result)
 {
-    $fetch = $result->fetch(PDO::FETCH_ASSOC);
+    $fetch = $result->fetch(\PDO::FETCH_ASSOC);
     echo $fetch['content'];
 }

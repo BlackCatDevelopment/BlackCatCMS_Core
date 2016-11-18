@@ -75,7 +75,7 @@ if (!class_exists('CAT_Backend_Page'))
 
             // the user needs to have the global pages_edit permission plus
             // permissions for the current page
-            if(!$self->user()->hasPerm('pages_edit') || !$self->user()->hasPagePerm($page_id))
+            if(!$self->user()->hasPerm('pages_edit') || !$self->user()->hasPagePerm($page_id,'pages_edit'))
                 CAT_Object::printFatalError('You are not allowed for the requested action!');
 
             $curr_tpl   = CAT_Helper_Page::getPageTemplate($page_id);

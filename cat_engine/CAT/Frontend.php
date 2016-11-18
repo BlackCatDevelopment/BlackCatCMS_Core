@@ -46,6 +46,7 @@ if (!class_exists('CAT_Frontend', false))
          **/
         public static function dispatch()
         {
+
             // forward to backend router
             if(CAT_Backend::isBackend())
                 return CAT_Backend::dispatch();
@@ -60,7 +61,6 @@ if (!class_exists('CAT_Frontend', false))
             if($self->router()->match('~^modules/~i'))
                 require CAT_ENGINE_PATH.'/'.$self->router()->getRoute();
 
-
             // check if the system is in maintenance mode
             if(self::isMaintenance())
             {
@@ -70,15 +70,26 @@ if (!class_exists('CAT_Frontend', false))
             }
             else
             {
-                // find page by route
-                $result = $self->db()->query(
-                    'SELECT `page_id` FROM `:prefix:pages` WHERE `link`=?',
-                    array('/'.$self->router()->getRoute())
-                );
+                $route = $self->router()->getRoute();
+                // no route -> get default page
+                if($route == '')
+                {
+                    $page_id = CAT_Helper_Page::getDefaultPage();
+                }
+                else // find page by route
+                {
+                    // remove suffix from route
+                    $route  = str_ireplace(CAT_Registry::get('PAGE_EXTENSION'), '', $route);
+                    $result = $self->db()->query(
+                        'SELECT `page_id` FROM `:prefix:pages` WHERE `link`=?',
+                        array('/'.$route)
+                    );
+                    $data    = $result->fetch();
+                    $page_id = $data['page_id'];
+                }
             }
-            $data   = $result->fetch();
             // get page handler
-            $page   = CAT_Page::getInstance($data['page_id']);
+            $page   = CAT_Page::getInstance($page_id);
             // hand over to page handler
             $page->show();
         }   // end function dispatch()

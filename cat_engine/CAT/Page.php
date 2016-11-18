@@ -45,17 +45,22 @@ if (!class_exists('CAT_Page', false))
          **/
         public static function getInstance($page_id=NULL)
         {
-            if (!is_numeric($page_id))
-                self::printFatalError('Invalid page ID!');
             if (!self::$helper)
                 self::$helper = CAT_Helper_Page::getInstance();
-            if(!isset(self::$instances[$page_id]))
+            if($page_id)
             {
-                self::$instances[$page_id] = new self($page_id);
-                self::$instances[$page_id]->page_id = $page_id;
-                self::init($page_id);
+                if(!isset(self::$instances[$page_id]))
+                {
+                    self::$instances[$page_id] = new self($page_id);
+                    self::$instances[$page_id]->page_id = $page_id;
+                    self::init($page_id);
+                }
+                return self::$instances[$page_id];
             }
-            return self::$instances[$page_id];
+            else
+            {
+                return new self(0);
+            }
         }   // end function getInstance()
 
         /**
@@ -75,10 +80,77 @@ if (!class_exists('CAT_Page', false))
          * @param  integer $block
          * @return void (direct print to STDOUT)
          **/
-        public function getPageContent($block = 1)
+        public static function getPageContent($block = 1)
         {
-echo "this would be the content<br />";
-        }
+            $page_id = self::getID();
+
+            // check if the page exists, is not marked as deleted, and has
+            // some content at all
+            if(
+                   !$page_id                           // no page id
+                || !self::$helper->exists($page_id)    // page does not exist
+                || !self::$helper->isActive($page_id)  // page not active
+            ) {
+                return self::print404();
+            }
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// TODO: Maintenance page
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            // check if user is allowed to see this page
+            if(!self::$helper->user()->is_root())
+            {
+                // global perm
+                if(self::$helper->user()->hasPagePerm($page_id,'pages_view'))
+                {
+                    self::$helper->printFatalError('You are not allowed to view this page!');
+                }
+            }
+
+            // get active sections
+            $sections = CAT_Sections::getActiveSections($page_id,$block);
+            if(!count($sections)) // no content for this block
+                return false;
+
+            $output = array();
+            foreach ($sections as $section)
+            {
+                // spare some typing
+                $section_id = $section['section_id'];
+                $module     = $section['module'];
+                $handler    = CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/view.php');
+                $langfile   = CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/languages/'.CAT_Registry::get('LANGUAGE').'.php');
+
+                if (file_exists($handler))
+                {
+                    // load language file (if any)
+                    if(file_exists($langfile) && self::$helper->lang()->checkFile($langfile,'LANG',true))
+                        $this->lang()->addFile(CAT_Registry::get('LANGUAGE').'.php', CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/languages'));
+
+                    // set template path
+                    if (file_exists(CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/templates')))
+                        self::$helper->tpl()->setPath(CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/templates'));
+                    if (file_exists(CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/templates/default')))
+                        self::$helper->tpl()->setPath(CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/templates/default'));
+                    if (file_exists(CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/templates/'.DEFAULT_TEMPLATE)))
+                    {
+                        self::$helper->tpl()->setFallbackPath(CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/templates/default'));
+                        self::$helper->tpl()->setPath(CAT_Helper_Directory::sanitizePath(CAT_ENGINE_PATH.'/modules/'.$module.'/templates/'.DEFAULT_TEMPLATE));
+                    }
+
+                    // fetch original content
+                    ob_start();
+                        require $handler;
+                        $output[] = ob_get_clean();
+                }
+                else
+                {
+                    self::log()->addError(sprintf('non existing module [%s] (or no view.php), called on page [%d], block [%d]',$module,$page_id,$block));
+                }
+            }
+            echo implode("\n", $output);
+        }   // end function getPageContent()
 
         /**
          * initialize current page
@@ -86,7 +158,7 @@ echo "this would be the content<br />";
         final private static function init($page_id)
         {
             self::$curr_page = $page_id;
-        }
+        }   // end function init()
 
         /**
          * Figure out which template to use
@@ -148,6 +220,8 @@ echo "this would be the content<br />";
                 require CAT_TEMPLATE_DIR.'/index.php';
                 $output = ob_get_contents();
             ob_clean();
+
+            echo $output;
         }
 
     } // end class CAT_Page

@@ -116,7 +116,7 @@ if ( !class_exists('CAT_Helper_Menu', false) )
             self::checkOptions($options);
             $self = self::getInstance();
             self::log()->debug('current page [{pid}] options [{opt}]',array('pid'=>$pid,'opt'=>print_r($options,1)));
-            $menu       = array();
+            $menu     = array();
             // get the level of the current page
             $level    = CAT_Helper_Page::properties($pid,'level');
             // get the path

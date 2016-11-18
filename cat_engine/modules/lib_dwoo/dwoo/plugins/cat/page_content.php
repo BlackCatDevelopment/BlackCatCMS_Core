@@ -16,5 +16,5 @@
 */
 
 function Dwoo_plugin_page_content(Dwoo $dwoo, $block=1) {
-    CAT_Page::getInstance()->getPageContent($block);
+    CAT_Page::getPageContent($block);
 }

@@ -35,7 +35,7 @@
                                 <input type="password" class="form-control" required="required" name="{$PASSWORD_FIELDNAME}" id="{$PASSWORD_FIELDNAME}" placeholder="{translate('Your password')}" />
                             </div>
                         </div>
-                        {if get_setting('enable_tfa'}}
+                        {if cat_get('enable_tfa'}}
                         <div class="form-group" id="tfagroup" style="display:none;">
                             <div class="input-group">
                                 <div class="input-group-addon"><span class="fa fa-fw fa-lock"></span></div>

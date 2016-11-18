@@ -315,10 +315,13 @@ if (!class_exists('CAT_User'))
          * @access public
          * @return
          **/
-        public function hasPagePerm($page_id)
+        public function hasPagePerm($page_id,$perm='pages_view')
         {
             if($this->is_root()) return true;
-            return ( $this->hasPerm('pages_edit') && $this->isOwner($page_id) );
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// TODO: Rechte im Frontend
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return ( $this->hasPerm($perm) || $this->isOwner($page_id) );
         }   // end function hasPagePerm()
 
         /**

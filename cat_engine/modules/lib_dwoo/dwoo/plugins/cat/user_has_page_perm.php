@@ -15,7 +15,7 @@
 
 */
 
-function Dwoo_Plugin_user_has_page_perm(Dwoo $dwoo, $page_id)
+function Dwoo_Plugin_user_has_page_perm(Dwoo $dwoo, $page_id, $perm)
 {
-    return CAT_User::getInstance()->hasPagePerm($page_id);
+    return CAT_User::getInstance()->hasPagePerm($page_id,$perm);
 }

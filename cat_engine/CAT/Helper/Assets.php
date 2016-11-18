@@ -67,6 +67,9 @@ if ( ! class_exists( 'CAT_Helper_Assets' ) )
             $output = '';
             $query  = CAT_Object::router()->getQuery();
             list($ignore,$files) = explode('=',$query);
+
+            if(!$files) return; // no files
+
             $files = explode(',',$files);
 
             foreach($files as $file) {
