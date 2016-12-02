@@ -6,7 +6,7 @@ https://github.com/BlackCatDevelopment/BlackCatCMS
 
 
 Official website of BackCat CMS (sorry, German only!):
-http://blackcat-cms.org
+https://blackcat-cms.org
 
 To build your unique download bundle with the add ons of your choice:
-http://blackcat-cms.org/page/download.php
+https://blackcat-cms.org/page/download.php
